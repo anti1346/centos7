@@ -10,6 +10,7 @@ USER root
 
 RUN yum install -qq -y \
         sudo \
+        passwd \
         which \
         curl \
         procps \
