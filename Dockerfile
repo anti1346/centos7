@@ -13,20 +13,9 @@ USER root
 
 RUN sed -i "s/mirrorlist=/#mirrorlist=/g" /etc/yum.repos.d/CentOS-* \
     && sed -i "s/#baseurl=http:\/\/mirror.centos.org/baseurl=http:\/\/vault.centos.org/g" /etc/yum.repos.d/CentOS-* \
-    && yum install -y sudo passwd shadow-utils \
-        openssh-clients \
-        # wget git\
-        net-tools \
-        iputils \
-        vim \
-        which \
-        curl \
-        procps-ng \
-        wget \
-        # iputils-ping \
-        # bind-utils \
-  && yum clean all \
-  && rm -rf /var/cache/yum
+    && yum install -y sudo passwd shadow-utils openssh-clients net-tools iputils vim which curl procps-ng wget \
+    && yum clean all \
+    && rm -rf /var/cache/yum
 
 # RUN echo "root:$SSH_ROOT_PASSWORD" | chpasswd \
 #     && cp -rf /etc/skel/.bash* /root/. \
