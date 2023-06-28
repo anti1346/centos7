@@ -8,19 +8,28 @@ ENV SSH_ROOT_PASSWORD=${SSH_ROOT_PASSWORD}
 
 USER root
 
-RUN yum install -y -q \
-        sudo \
-        passwd \
+ENV TZ=Asia/Seoul
+
+RUN echo $TZ > /etc/timezone
+
+USER root
+
+RUN sed -i "s/mirrorlist=/#mirrorlist=/g" /etc/yum.repos.d/CentOS-* \
+    && sed -i "s/#baseurl=http:\/\/mirror.centos.org/baseurl=http:\/\/vault.centos.org/g" /etc/yum.repos.d/CentOS-* \
+    && yum install -y -q sudo passwd shadow-utils \
+        openssh-clients \
+        # wget git\
+        net-tools \
+        iputils \
+        vim \
         which \
         curl \
         procps-ng \
         wget \
-        ssh \
-        # vim \
-        # net-tools \
         # iputils-ping \
-        # dnsutils \
-        # git \
+        # bind-utils \
+  && yum clean all \
+  && rm -rf /var/cache/yum
 
 # RUN echo "root:$SSH_ROOT_PASSWORD" | chpasswd \
 #     && cp -rf /etc/skel/.bash* /root/. \
