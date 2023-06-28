@@ -9,6 +9,11 @@ docker build -t anti1346/centos7:latest . --no-cache
 ```
 docker push anti1346/centos7:latest
 ```
+##### 컨테이너 실행 및 액세스(접속)
+```
+docker run -it --rm anti1346/centos7:latest bash
+```
+
 ##### Privileged 모드로 컨테이너 실행
 ```
 docker run -d --privileged --name centos7 anti1346/centos7:latest
