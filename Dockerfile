@@ -8,7 +8,7 @@ ENV SSH_ROOT_PASSWORD=${SSH_ROOT_PASSWORD}
 
 USER root
 
-RUN yum install -qq -y \
+RUN yum install -y -q \
         sudo \
         passwd \
         which \
