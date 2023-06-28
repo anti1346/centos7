@@ -5,9 +5,6 @@ LABEL website="sangchul.kr"
 ARG SSH_ROOT_PASSWORD=${SSH_ROOT_PASSWORD:-root}
 
 ENV SSH_ROOT_PASSWORD=${SSH_ROOT_PASSWORD}
-
-USER root
-
 ENV TZ=Asia/Seoul
 
 RUN echo $TZ > /etc/timezone
@@ -16,7 +13,7 @@ USER root
 
 RUN sed -i "s/mirrorlist=/#mirrorlist=/g" /etc/yum.repos.d/CentOS-* \
     && sed -i "s/#baseurl=http:\/\/mirror.centos.org/baseurl=http:\/\/vault.centos.org/g" /etc/yum.repos.d/CentOS-* \
-    && yum install -y -q sudo passwd shadow-utils \
+    && yum install -y sudo passwd shadow-utils \
         openssh-clients \
         # wget git\
         net-tools \
