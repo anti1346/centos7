@@ -3,7 +3,7 @@
 #### CentOS Linux 7(systemd)
 ##### docker build
 ```
-docker build -t anti1346/centos7:systemd -f Dockerfile.systemd . --no-cache
+docker build -t anti1346/centos7:systemd -f Dockerfile.systemd --no-cache --load .
 ```
 ##### docker push(Upload to Docker Hub)
 ```
