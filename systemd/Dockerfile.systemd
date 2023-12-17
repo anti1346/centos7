@@ -32,7 +32,7 @@ VOLUME [ "/sys/fs/cgroup" ]
 RUN yum install -qq -y systemd \
                        sudo \
                        curl \
-                       procps
+                       procps \
     && yum clean all
 
 # Uncomment the following lines to install additional packages
