@@ -11,7 +11,7 @@ docker push anti1346/centos7:systemd
 ```
 ##### Privileged 모드로 컨테이너 실행
 ```
-docker run -d --privileged --name centos7-systemd anti1346/centos7:systemd
+docker run --privileged -d --name centos7-systemd anti1346/centos7:systemd /sbin/init
 ```
 ##### 컨테이너에 액세스(접속)
 ```
