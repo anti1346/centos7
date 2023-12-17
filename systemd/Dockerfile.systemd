@@ -1,26 +1,51 @@
+# Use the official CentOS 7 base image
 FROM centos:centos7
 
+# Set metadata information
 LABEL website="sangchul.kr"
 
+# Define an argument for the SSH root password, with a default value
 ARG SSH_ROOT_PASSWORD=${SSH_ROOT_PASSWORD:-root}
 
+# Set an environment variable for the SSH root password
 ENV SSH_ROOT_PASSWORD=${SSH_ROOT_PASSWORD}
 
+# Switch to root user for administrative tasks
 USER root
 
-RUN yum install -qq -y systemd \
-        sudo \
-        curl \
-        procps
-        # ssh \
-        # openssh-server \
-        # procps \
-        # net-tools \
-        # iputils-ping \
-        # dnsutils \
-        # vim \
-        # git \
+# Remove unnecessary systemd units and clean up
+RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do \
+        [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; \
+    done) \
+    && rm -f /lib/systemd/system/multi-user.target.wants/* \
+    && rm -f /etc/systemd/system/*.wants/* \
+    && rm -f /lib/systemd/system/local-fs.target.wants/* \
+    && rm -f /lib/systemd/system/sockets.target.wants/*udev* \
+    && rm -f /lib/systemd/system/sockets.target.wants/*initctl* \
+    && rm -f /lib/systemd/system/basic.target.wants/* \
+    && rm -f /lib/systemd/system/anaconda.target.wants/*;
 
+# Define a volume for systemd
+VOLUME [ "/sys/fs/cgroup" ]
+
+# Install necessary packages
+RUN yum install -qq -y systemd \
+                       sudo \
+                       curl \
+                       procps
+    && yum clean all
+
+# Uncomment the following lines to install additional packages
+# && yum install -qq -y ssh \
+#                      openssh-server \
+#                      procps \
+#                      net-tools \
+#                      iputils-ping \
+#                      dnsutils \
+#                      vim \
+#                      git \
+
+# Set the root password for SSH
 RUN echo "root:$SSH_ROOT_PASSWORD" | chpasswd \
     && cp -rf /etc/skel/.bash* /root/. \
     && echo 'export PS1="\[\033[01;32m\]\u\[\e[m\]\[\033[01;32m\]@\[\e[m\]\[\033[01;32m\]\h\[\e[m\]:\[\033[01;34m\]\W\[\e[m\]$ "' >> ~/.bashrc
