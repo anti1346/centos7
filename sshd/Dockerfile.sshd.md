@@ -1,22 +1,28 @@
 # Docker SSH Server
-
-### Docker Build
-##### docker build
+##### docker buildx build
 ```
-docker build --tag anti1346/centos7:sshd -f ./Dockerfile.sshd . --no-cache
+docker buildx create --use
+```
+##### docker build & load
+```
+docker buildx build --tag anti1346/centos7:sshd -f Dockerfile.sshd --platform linux/amd64,linux/arm64 --no-cache --load .
 ```
 ```
-docker build --tag anti1346/centos7:sshd --build-arg SSH_USER=centos --build-arg SSH_PASSWORD=centos -f ./Dockerfile.sshd .
+docker buildx build --tag anti1346/centos7:sshd -f Dockerfile.sshd --platform linux/amd64,linux/arm64 --build-arg SSH_USER=centos --build-arg SSH_PASSWORD=centos --no-cache --load .
 ```
-##### docker push
+##### docker build & push(Upload to Docker Hub)
 ```
-docker push anti1346/centos7:sshd
+docker buildx build --tag anti1346/centos7:sshd -f Dockerfile.sshd --platform linux/amd64,linux/arm64 --no-cache --push .
 ```
-##### docker run
+##### docker pull(Download to Docker Hub)
 ```
-docker run -d --name centos7-sshd anti1346/centos7:sshd
+docker pull anti1346/centos7:sshd
 ```
-##### docker exec
+##### Privileged 모드로 컨테이너 실행
+```
+docker run --privileged -d --name centos7-sshd anti1346/centos7:sshd /sbin/init
+```
+##### 컨테이너에 액세스(접속)
 ```
 docker exec -it centos7-sshd bash
 ```

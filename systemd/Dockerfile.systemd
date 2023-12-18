@@ -1,23 +1,25 @@
-# Use the official CentOS 7 base image
+# 공식 CentOS 7 기본 이미지 사용
 FROM centos:centos7
 
-# Set metadata information
+# 메타데이터 정보 설정
 LABEL website="sangchul.kr"
 
-# Define an argument for the SSH root password, with a default value
+# 기본값으로 SSH 루트 비밀번호에 대한 인수를 정의합니다
 ARG SSH_ROOT_PASSWORD=${SSH_ROOT_PASSWORD:-root}
 
-# Set an environment variable for the SSH root password
+# SSH 루트 비밀번호에 대한 환경 변수 설정하기
 ENV SSH_ROOT_PASSWORD=${SSH_ROOT_PASSWORD}
 
-# Install necessary packages
-RUN yum install -y epel-release \
-    && yum install -y openssh-server initscripts passwd yum-utils wget tar sudo \
+# 필요한 패키지 설치
+RUN sed -i "s/mirrorlist=/#mirrorlist=/g" /etc/yum.repos.d/CentOS-* \
+    && sed -i "s/#baseurl=http:\/\/mirror.centos.org/baseurl=http:\/\/vault.centos.org/g" /etc/yum.repos.d/CentOS-* \
+    && yum install -y epel-release \
+    && yum install -y openssh-server initscripts passwd shadow-utils yum-utils wget tar sudo \
         procps net-tools iputils-ping dnsutils curl \
         curl vim git \
     && yum clean all
 
-# Clean up unnecessary systemd files
+# 불필요한 시스템 파일 정리하기
 RUN rm -f /lib/systemd/system/sysinit.target.wants/* \
     && rm -f /lib/systemd/system/multi-user.target.wants/* \
     && rm -f /etc/systemd/system/*.wants/* \
@@ -28,15 +30,15 @@ RUN rm -f /lib/systemd/system/sysinit.target.wants/* \
     && rm -f /lib/systemd/system/anaconda.target.wants/* \
     && rm -f /etc/security/limits.d/20-nproc.conf
 
-# Configure SSH and set root password
+# SSH 구성 및 루트 비밀번호 설정
 RUN mkdir -p /root/.ssh \
     && echo "PermitRootLogin yes" >> /etc/ssh/sshd_config \
     && echo "root:$SSH_ROOT_PASSWORD" | chpasswd \
     && echo 'export PS1="\[\033[01;32m\]\u\[\e[m\]\[\033[01;32m\]@\[\e[m\]\[\033[01;32m\]\h\[\e[m\]:\[\033[01;34m\]\W\[\e[m\]$ "' >> ~/.bashrc \
     && chmod 700 /root/.ssh
 
-# Define volume for systemd
+# 시스템 볼륨 정의
 VOLUME ["/sys/fs/cgroup"]
 
-# Set the default command to systemd
+# 기본 명령을 systemd로 설정
 CMD ["/usr/sbin/init"]
