@@ -20,17 +20,24 @@ docker pull anti1346/centos7:sshd
 ```
 ##### Architecture 확인
 ```
-docker inspect anti1346/centos7:systemd --format='{{.Architecture}}'
+docker inspect anti1346/centos7:sshd --format='{{.Architecture}}'
 ```
-##### Privileged 모드로 컨테이너 실행
+##### 컨테이너 실행
 ```
-docker run -d --name centos7-sshd anti1346/centos7:sshd
+docker run -d --name centos7-sshd -p 22:22 anti1346/centos7:sshd
+```
+##### ssh 클라이언트로 컨테이너 접속
+```
+ssh centos@localhost
+```
+##### docker container ip
+```
+docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' centos7-sshd
 ```
 ##### 컨테이너에 액세스(접속)
 ```
 docker exec -it centos7-sshd bash
 ```
-
 
 ### Docker Compose Build
 ##### docker-compose build
@@ -51,4 +58,6 @@ docker-compose exec ssh-server bash
 docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' centos7-sshd
 ```
 ##### ssh access info
+```
 centos / centos
+```
