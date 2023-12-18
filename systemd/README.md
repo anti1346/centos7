@@ -25,3 +25,7 @@ docker run --privileged -d --name centos7-systemd anti1346/centos7:systemd /sbin
 ```
 docker exec -it centos7-systemd bash
 ```
+##### Architecture 확인
+```
+docker inspect anti1346/centos7:systemd --format='{{.Architecture}}'
+```
