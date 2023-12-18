@@ -1,13 +1,21 @@
 # CentOS 7
 
 #### CentOS Linux 7(systemd)
-##### docker build
+##### docker buildx build
 ```
-docker build -t anti1346/centos7:systemd -f Dockerfile.systemd --no-cache --load .
+docker buildx create --use
 ```
-##### docker push(Upload to Docker Hub)
+##### docker build & load
 ```
-docker push anti1346/centos7:systemd
+docker buildx build --tag anti1346/centos7:systemd -f Dockerfile.systemd --platform linux/amd64,linux/arm64 --no-cache --load .
+```
+##### docker build & push(Upload to Docker Hub)
+```
+docker buildx build --tag anti1346/centos7:systemd -f Dockerfile.systemd --platform linux/amd64,linux/arm64 --no-cache --push .
+```
+##### docker pull(Download to Docker Hub)
+```
+docker pull anti1346/centos7:systemd
 ```
 ##### Privileged 모드로 컨테이너 실행
 ```
@@ -16,8 +24,4 @@ docker run --privileged -d --name centos7-systemd anti1346/centos7:systemd /sbin
 ##### 컨테이너에 액세스(접속)
 ```
 docker exec -it centos7-systemd bash
-```
-##### Privileged 모드로 컨테이너 실행 후 컨테이너에 액세스(접속)
-```
-docker run -it --rm --privileged --name centos7-systemd anti1346/centos7:systemd bash
 ```

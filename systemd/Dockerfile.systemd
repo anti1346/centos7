@@ -10,44 +10,33 @@ ARG SSH_ROOT_PASSWORD=${SSH_ROOT_PASSWORD:-root}
 # Set an environment variable for the SSH root password
 ENV SSH_ROOT_PASSWORD=${SSH_ROOT_PASSWORD}
 
-# Switch to root user for administrative tasks
-USER root
-
-# Install systemd
-RUN yum install -y systemd; \
-    yum clean all; \
-    (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do \
-        [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; \
-    done); \
-    rm -f /lib/systemd/system/multi-user.target.wants/*; \
-    rm -f /etc/systemd/system/*.wants/*;\
-    rm -f /lib/systemd/system/local-fs.target.wants/*; \
-    rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
-    rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
-    rm -f /lib/systemd/system/basic.target.wants/*;\
-    rm -f /lib/systemd/system/anaconda.target.wants/*;
-
 # Install necessary packages
-RUN yum install -y sudo \
-    curl \
-    procps \
-  && yum clean all
+RUN yum install -y epel-release \
+    && yum install -y openssh-server initscripts passwd yum-utils wget tar sudo \
+        procps net-tools iputils-ping dnsutils curl \
+        curl vim git \
+    && yum clean all
 
-# Uncomment the following lines to install additional packages
-# && yum install -qq -y ssh \
-#                      openssh-server \
-#                      procps \
-#                      net-tools \
-#                      iputils-ping \
-#                      dnsutils \
-#                      vim \
-#                      git \
+# Clean up unnecessary systemd files
+RUN rm -f /lib/systemd/system/sysinit.target.wants/* \
+    && rm -f /lib/systemd/system/multi-user.target.wants/* \
+    && rm -f /etc/systemd/system/*.wants/* \
+    && rm -f /lib/systemd/system/local-fs.target.wants/* \
+    && rm -f /lib/systemd/system/sockets.target.wants/*udev* \
+    && rm -f /lib/systemd/system/sockets.target.wants/*initctl* \
+    && rm -f /lib/systemd/system/basic.target.wants/* \
+    && rm -f /lib/systemd/system/anaconda.target.wants/* \
+    && rm -f /etc/security/limits.d/20-nproc.conf
 
-# Set the root password for SSH
-RUN echo "root:$SSH_ROOT_PASSWORD" | chpasswd \
-    && cp -rf /etc/skel/.bash* /root/. \
-    && echo 'export PS1="\[\033[01;32m\]\u\[\e[m\]\[\033[01;32m\]@\[\e[m\]\[\033[01;32m\]\h\[\e[m\]:\[\033[01;34m\]\W\[\e[m\]$ "' >> ~/.bashrc
+# Configure SSH and set root password
+RUN mkdir -p /root/.ssh \
+    && echo "PermitRootLogin yes" >> /etc/ssh/sshd_config \
+    && echo "root:$SSH_ROOT_PASSWORD" | chpasswd \
+    && echo 'export PS1="\[\033[01;32m\]\u\[\e[m\]\[\033[01;32m\]@\[\e[m\]\[\033[01;32m\]\h\[\e[m\]:\[\033[01;34m\]\W\[\e[m\]$ "' >> ~/.bashrc \
+    && chmod 700 /root/.ssh
 
-# Enable systemd init system
+# Define volume for systemd
+VOLUME ["/sys/fs/cgroup"]
+
+# Set the default command to systemd
 CMD ["/usr/sbin/init"]
-
