@@ -9,9 +9,6 @@ ENV TZ=Asia/Seoul
 
 USER root
 
-RUN sed -i "s/mirrorlist=/#mirrorlist=/g" /etc/yum.repos.d/CentOS-* \
-    && sed -i "s|#baseurl=http://mirror.centos.org|baseurl=https://mirror.kakao.com|g" /etc/yum.repos.d/CentOS-*
-
 RUN yum install -y epel-release \
     && yum install -y systemd \
         initscripts \

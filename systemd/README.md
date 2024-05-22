@@ -5,10 +5,6 @@
 ```
 docker buildx create --use
 ```
-##### docker build & load
-```
-docker buildx build --tag anti1346/centos7:systemd -f Dockerfile --platform linux/amd64,linux/arm64 --no-cache --load .
-```
 ##### 다중 플랫폼 이미지 빌드 및 레지스트리 푸시(PUSH)
 ```
 docker buildx build --tag anti1346/centos7:systemd -f Dockerfile --platform linux/amd64,linux/arm64 --no-cache --push .
@@ -22,6 +18,10 @@ docker pull anti1346/centos7:systemd
 docker inspect anti1346/centos7:systemd --format='{{.Architecture}}'
 ```
 ##### 컨테이너 실행(RUN)
+```
+docker run -it --rm --name centos7-systemd anti1346/centos7:systemd
+```
+##### 컨테이너 실행(privileged)
 ```
 docker run -d --privileged --name centos7-systemd anti1346/centos7:systemd
 ```
