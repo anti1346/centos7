@@ -25,6 +25,14 @@ docker inspect anti1346/centos7:systemd --format='{{.Architecture}}'
 ```
 docker run -d --privileged --name centos7-systemd anti1346/centos7:systemd
 ```
+```
+docker run -d --privileged --name centos7-systemd \
+  -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
+  --tmpfs /run \
+  --tmpfs /run/lock \
+  -p 80:80 -p 443:443 -p 2222:22 -p 3306:3306 \
+  anti1346/centos7:systemd
+```
 ##### 컨테이너에 Bash 셸 실행(EXEC)
 ```
 docker exec -it centos7-systemd bash
