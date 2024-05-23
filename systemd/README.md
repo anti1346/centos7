@@ -7,7 +7,7 @@ docker buildx create --use
 ```
 ##### 다중 플랫폼 이미지 빌드 및 레지스트리 푸시(PUSH)
 ```
-docker buildx build --tag anti1346/centos7:systemd -f Dockerfile --platform linux/amd64,linux/arm64 --no-cache --push .
+docker buildx build --tag anti1346/centos7:systemd --platform linux/amd64,linux/arm64 --no-cache --push .
 ```
 ##### 이미지 풀(PULL)
 ```
