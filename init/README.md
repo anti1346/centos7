@@ -36,6 +36,11 @@ docker exec -it centos7-init /bin/bash
 ```
 
 <details>
-<summary>README 백업</summary>
-
+<summary>Docker Build</summary>
+```
+docker build --tag anti1346/centos7:init --no-cache .
+```
+```
+docker push anti1346/centos7:init
+```
 </details>
