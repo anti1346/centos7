@@ -1,10 +1,10 @@
 version: '3.8'
 services:
-  centos7:
-    image: anti1346/centos7
+  centos7-init:
+    image: anti1346/centos7:init
     restart: unless-stopped
-    hostname: centos
-    container_name: centos
+    hostname: centos7
+    container_name: centos7
     privileged: true
     user: root
     working_dir: /root/
