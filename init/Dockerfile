@@ -20,5 +20,7 @@ RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == system
 
 # Set systemd as entrypoint
 STOPSIGNAL SIGRTMIN+3
+
 VOLUME [ "/sys/fs/cgroup" ]
+
 CMD ["/usr/sbin/init"]

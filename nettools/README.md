@@ -1,12 +1,12 @@
-# CentOS 7
-### CentOS Linux 7(netttools)
+# CentOS Linux 7(netttools)
+
 ##### docker buildx build
 ```
 docker buildx create --use
 ```
 ##### docker build & push(Upload to Docker Hub)
 ```
-docker buildx build --tag anti1346/centos7:netttools -f Dockerfile.netttools --platform linux/amd64,linux/arm64 --no-cache --push .
+docker buildx build --tag anti1346/centos7:netttools --platform linux/amd64,linux/arm64 --no-cache --push .
 ```
 ##### docker pull(Download to Docker Hub)
 ```
