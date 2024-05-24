@@ -27,9 +27,6 @@ docker run -it --rm --name centos7-init anti1346/centos7:init bash
 ```
 docker run -d --privileged --name centos7-init anti1346/centos7:init /sbin/init
 ```
-```
-docker run -d --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro --name centos7-init anti1346/centos7:init /sbin/init
-```
 ##### 컨테이너에 액세스(접속)
 ```
 docker exec -it centos7-init /bin/bash
