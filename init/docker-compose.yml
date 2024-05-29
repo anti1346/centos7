@@ -1,14 +1,17 @@
 version: '3.8'
+
 services:
   centos7-init:
     image: anti1346/centos7:init
     restart: unless-stopped
-    hostname: centos7
-    container_name: centos7
+    hostname: centos7-init
+    container_name: centos7-init
     privileged: true
     user: root
     working_dir: /root/
+    # command: /sbin/init
     volumes:
-      - /usr/share/zoneinfo/Asia/Seoul:/etc/localtime:ro
+      - /run:/run
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    command: /sbin/init
+      - /usr/share/zoneinfo/Asia/Seoul:/etc/localtime:ro
+

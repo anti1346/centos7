@@ -39,6 +39,9 @@ docker exec -it centos7-init /bin/bash
 docker build --tag anti1346/centos7:init --no-cache .
 ```
 ```
+docker tag anti1346/centos7:init anti1346/centos7-init:latest
+```
+```
 docker push anti1346/centos7:init
 ```
 </details>
