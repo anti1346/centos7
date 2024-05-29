@@ -8,9 +8,6 @@ docker buildx create --use
 ```
 docker buildx build --tag anti1346/centos7:init --platform linux/amd64,linux/arm64 --no-cache --push .
 ```
-```
-docker buildx build --tag anti1346/centos7-init:latest --platform linux/amd64,linux/arm64 --no-cache --push .
-```
 ##### docker pull(Download to Docker Hub)
 ```
 docker pull anti1346/centos7:init
@@ -31,6 +28,14 @@ docker run -d --privileged --name centos7-init anti1346/centos7:init /sbin/init
 ```
 docker exec -it centos7-init /bin/bash
 ```
+
+<details>
+<summary>Docker buildx Build</summary>
+
+```
+docker buildx build --tag anti1346/centos7-init:latest --platform linux/amd64,linux/arm64 --no-cache --push .
+```
+</details>
 
 <details>
 <summary>Docker Build</summary>

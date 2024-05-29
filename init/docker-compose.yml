@@ -9,9 +9,12 @@ services:
     privileged: true
     user: root
     working_dir: /root/
-    # command: /sbin/init
+    command: /sbin/init
     volumes:
       - /run:/run
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
       - /usr/share/zoneinfo/Asia/Seoul:/etc/localtime:ro
+    ports:
+      - 2222:22
+
 
